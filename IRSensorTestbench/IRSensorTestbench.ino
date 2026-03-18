@@ -1,4 +1,4 @@
-#include "IRSensor.h"
+#include <IRSensor.h>
 
 // using the pin number
 IRSensor mySensor(4); 
@@ -20,7 +20,7 @@ void loop() {
       Serial.println("OBJECT IS BEING SENSED!");
     }
     else {
-      Serial.println("NO OBJECT SENSED!")
+      Serial.println("NO OBJECT SENSED!");
     }
 
     // read the values 4 times per second
