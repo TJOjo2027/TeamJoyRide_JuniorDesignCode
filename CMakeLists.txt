@@ -3,4 +3,7 @@ project(Junior_Design___Systems_Engineering)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(Junior_Design___Systems_Engineering main.cpp)
+include_directories("C:/Users/tojo/AppData/Local/Arduino15/packages/arduino/hardware/avr/1.8.6/cores/arduino")
+
+add_executable(Junior_Design___Systems_Engineering main.cpp
+        IRSensor.h)
