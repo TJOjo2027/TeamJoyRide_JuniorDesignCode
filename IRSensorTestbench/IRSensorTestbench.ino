@@ -2,6 +2,7 @@
 
 // using the pin number
 IRSensor mySensor(4); 
+uint8_t count = 0;
 
 void setup() {
     Serial.begin(9600);
@@ -17,12 +18,15 @@ void loop() {
     int status = digitalRead(mySensor.getPinNum());
 
     if (mySensor.isObjectPresent()) {
-      Serial.println("OBJECT IS BEING SENSED!");
+      Serial.println(F("OBJECT IS BEING SENSED!"));
+      count++;
+      Serial.print(F("Count: "));
+      Serial.println(count);
     }
     else {
       Serial.println("NO OBJECT SENSED!");
     }
 
-    // read the values 4 times per second
-    delay(250);
+    // read the values every second
+    delay(1000);
 }
