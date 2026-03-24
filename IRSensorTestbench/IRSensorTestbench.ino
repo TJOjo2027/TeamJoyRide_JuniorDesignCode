@@ -1,7 +1,8 @@
 #include <IRSensor.h>
+#include <definitions.h>
 
 // using the pin number
-IRSensor mySensor(4); 
+IRSensor mySensor(IR_SENSOR_PIN); 
 
 void setup() {
     Serial.begin(9600);
