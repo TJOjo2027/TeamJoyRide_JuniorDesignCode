@@ -24,5 +24,10 @@ const uint8_t DIR_DRIVER_PIN_2 = 25;
 const uint8_t PUL_DRIVER_PIN_3 = 26;
 const uint8_t DIR_DRIVER_PIN_3 = 27;
 
+// STEPPER MOTOR RPMS
+const uint8_t STEPPER_MOTOR_RPM_1;
+const uint8_t STEPPER_MOTOR_RPM_2;
+const uint8_t STEPPER_MOTOR_RPM_3;
+
 
 #endif //DEFINITIONS_H

@@ -1,7 +1,3 @@
-//
-// Created by tojo on 3/17/2026.
-//
-
 #include <Arduino.h>
 
 #ifndef IRSENSOR_H
