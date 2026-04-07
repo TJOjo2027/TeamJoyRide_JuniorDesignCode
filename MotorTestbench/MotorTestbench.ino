@@ -1,44 +1,25 @@
 #include <definitions.h>
+#include <StepperMotor.h>
 
-// change the PUL_DRIVER_PIN & DIR_DRIVER_PIN number as needed
-const uint8_t ACTIVE_PUL = PUL_DRIVER_PIN_1; 
-const uint8_t ACTIVE_DIR = DIR_DRIVER_PIN_1; 
+StepperMotor Motor1 = StepperMotor(PUL_DRIVER_PIN_1, DIR_DRIVER_PIN_1, 50, 1);
+StepperMotor Motor2 = StepperMotor(PUL_DRIVER_PIN_2, DIR_DRIVER_PIN_2, 50, 1);
+StepperMotor Motor3 = StepperMotor(PUL_DRIVER_PIN_3, DIR_DRIVER_PIN_3, 50, 1);
 
 void setup() {
-  pinMode(PUL_DRIVER_PIN_1, OUTPUT);
-  pinMode(DIR_DRIVER_PIN_1, OUTPUT);
-  
-  Serial.begin(9600);
-  Serial.print("Testing Driver on PUL: ");
-  Serial.print(ACTIVE_PUL);
-  Serial.print(" | DIR: ");
-  Serial.println(ACTIVE_DIR);
+  Motor1.initPins();
+  Motor2.initPins();
+  Motor3.initPins();
 }
 
 void loop() {
-  // 1. Set Direction (HIGH)
-  digitalWrite(ACTIVE_DIR, HIGH); // sets polarity
-  Serial.println("Direction: HIGH | Rotating...");
-  
-  for(int i = 0; i < 200; i++) {
-    digitalWrite(ACTIVE_PUL, HIGH);
-    delayMicroseconds(1000);
-    digitalWrite(ACTIVE_PUL, LOW);
-    delayMicroseconds(1000);
-  }
-  
-  delay(1000);
+  // create the array of parameters
+  SyncRotationParam params[] = {
+    SyncRotationParam(&Motor1, true, 0.5),
+    SyncRotationParam(&Motor2, true, 5.0),
+    SyncRotationParam(&Motor3, false, 0.25)
+  };
 
-  // 2. Set Direction (LOW)
-  digitalWrite(ACTIVE_DIR, LOW); // sets polarity
-  Serial.println("Direction: LOW | Rotating...");
-  
-  for(int i = 0; i < 200; i++) {
-    digitalWrite(ACTIVE_PUL, HIGH);
-    delayMicroseconds(1000);
-    digitalWrite(ACTIVE_PUL, LOW);
-    delayMicroseconds(1000);
-  }
+  SynchoRotate(params, 3);
 
-  delay(1000);
+  delay(2000); 
 }
