@@ -14,12 +14,18 @@ void setup() {
 void loop() {
   // create the array of parameters
   SyncRotationParam params[] = {
-    SyncRotationParam(&Motor1, true, 0.5),
-    SyncRotationParam(&Motor2, true, 5.0),
-    SyncRotationParam(&Motor3, false, 0.25)
+    SyncRotationParam(&Motor1, true, 2.0),
+    SyncRotationParam(&Motor2, false, 2.0),
+    SyncRotationParam(&Motor3, true, 2.0)
   };
 
   SynchoRotate(params, 3);
 
-  delay(2000); 
+  delay(2000);
+
+  Motor1.rotateClockwise(0.25);
+  Motor2.rotateClockwise(0.25);
+  Motor3.rotateClockwise(0.25);
+
+  delay(250);
 }

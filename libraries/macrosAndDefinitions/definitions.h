@@ -6,8 +6,13 @@
 #define DEFINITIONS_H
 
 // LINEAR ACUATOR PINS
+const uint8_t LINEAR_ACUATOR_1_IN1 = 52;
+const uint8_t LINEAR_ACUATOR_1_IN2 = 53;
+const uint8_t LINEAR_ACUATOR_2_IN1 = 54;
+const uint8_t LINEAR_ACUATOR_2_IN2 = 55;
 
 // CLAW PINS
+const uint8_t CLAW_PIN = 10;
 
 // SENSOR PINS
 const uint8_t IR_SENSOR_PIN = 40;
