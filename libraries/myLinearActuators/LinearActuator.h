@@ -6,7 +6,7 @@
 class LinearActuator {
     public:
         // constructor
-        LinearAcuator(uint8_t in1Pin, uint8_t in2Pin) {
+        LinearActuator(uint8_t in1Pin, uint8_t in2Pin) {
             this -> in1Pin = in1Pin;
             this -> in2Pin = in2Pin;
         }

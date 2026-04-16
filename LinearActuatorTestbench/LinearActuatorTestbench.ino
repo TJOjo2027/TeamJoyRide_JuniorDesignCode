@@ -1,8 +1,8 @@
 #include <definitions.h>
-#include <LinearAcuator.h>
+#include <LinearActuator.h>
 
-LinearActuator LinearActuator1(LINEAR_ACUATOR_1_IN1, LINEAR_ACUATOR_1_IN2);
-LinearActuator LinearActuator2(LINEAR_ACUATOR_2_IN1, LINEAR_ACUATOR_2_IN2);
+LinearActuator LinearActuator1(LINEAR_ACTUATOR_1_IN1, LINEAR_ACTUATOR_1_IN2);
+LinearActuator LinearActuator2(LINEAR_ACTUATOR_2_IN1, LINEAR_ACTUATOR_2_IN2);
 
 const int EXTEND_RETRACT_TIME = 1;
 

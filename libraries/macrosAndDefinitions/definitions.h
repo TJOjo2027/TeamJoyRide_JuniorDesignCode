@@ -5,21 +5,17 @@
 #ifndef DEFINITIONS_H
 #define DEFINITIONS_H
 
-// LINEAR ACUATOR PINS
-const uint8_t LINEAR_ACUATOR_1_IN1 = 52;
-const uint8_t LINEAR_ACUATOR_1_IN2 = 53;
-const uint8_t LINEAR_ACUATOR_2_IN1 = 54;
-const uint8_t LINEAR_ACUATOR_2_IN2 = 55;
+// LINEAR ACTUATOR PINS
+const uint8_t LINEAR_ACTUATOR_1_IN1 = 52;
+const uint8_t LINEAR_ACTUATOR_1_IN2 = 53;
+const uint8_t LINEAR_ACTUATOR_2_IN1 = 54;
+const uint8_t LINEAR_ACTUATOR_2_IN2 = 55;
 
 // CLAW PINS
 const uint8_t CLAW_PIN = 10;
 
 // SENSOR PINS
 const uint8_t IR_SENSOR_PIN = 40;
-
-// LIMIT SWITCH PINS
-const uint8_t LIMIT_SWITCH_PIN_1 = 30;
-const uint8_t LIMIT_SWITCH_PIN_2 = 31;
 
 // STEPPER DRIVER PINS
 const uint8_t PUL_DRIVER_PIN_1 = 22;
@@ -33,6 +29,10 @@ const uint8_t DIR_DRIVER_PIN_3 = 27;
 const uint8_t STEPPER_MOTOR_RPM_1;
 const uint8_t STEPPER_MOTOR_RPM_2;
 const uint8_t STEPPER_MOTOR_RPM_3;
+
+// CLAW GRIP DISTANCES
+const uint16_t CLAW_GRIP_OPEN = 180;
+const uint16_t CLAW_GRIP_CLOSED = 0;
 
 
 #endif //DEFINITIONS_H
