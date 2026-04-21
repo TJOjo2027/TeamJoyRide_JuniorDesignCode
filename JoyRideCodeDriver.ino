@@ -5,93 +5,127 @@
 #include <LinearActuator.h>
 
 // SENSOR OBJECT
-IRSensor mySensor(IR_SENSOR_PIN); 
+IRSensor secondarySensor = IRSensor(IR_SENSOR_PIN); 
 
 // LINEAR ACTUATOR OBJECTS
-LinearActuator LinearActuator1(LINEAR_ACTUATOR_1_IN1, LINEAR_ACTUATOR_1_IN2);
-LinearActuator LinearActuator2(LINEAR_ACTUATOR_2_IN1, LINEAR_ACTUATOR_2_IN2);
+LinearActuator secondaryLA = LinearActuator(LINEAR_ACTUATOR_1_IN1, LINEAR_ACTUATOR_1_IN2);
+LinearActuator gripperLA = LinearActuator(LINEAR_ACTUATOR_2_IN3, LINEAR_ACTUATOR_2_IN4);
 
 // STEPPER MOTOR OBJECTS
-StepperMotor Motor1 = StepperMotor(PUL_DRIVER_PIN_1, DIR_DRIVER_PIN_1, 50, 1);
-StepperMotor Motor2 = StepperMotor(PUL_DRIVER_PIN_2, DIR_DRIVER_PIN_2, 50, 1);
-StepperMotor Motor3 = StepperMotor(PUL_DRIVER_PIN_3, DIR_DRIVER_PIN_3, 50, 1);
+StepperMotor primaryMotor = StepperMotor(PUL_DRIVER_PIN_1, DIR_DRIVER_PIN_1, 10, 4);
+StepperMotor movingMotor = StepperMotor(PUL_DRIVER_PIN_2, DIR_DRIVER_PIN_2, 40, 1);
+StepperMotor flipperMotor = StepperMotor(PUL_DRIVER_PIN_3, DIR_DRIVER_PIN_3, 25, 4);
 
 // CLAW GRIP SERVO (OBJECT IS ALREADY MADE, NO POINT RE-INVENTING THE WHEEL)
 Servo clawServo;
 
 void setup () {
   // initialize the pins for the electronics
-  mySensor.initPin();
+  secondarySensor.initPin();
 
-  LinearActuator1.initPins();
-  LinearActuator2.initPins();
+  secondaryLA.initPins();
+  gripperLA.initPins();
 
-  Motor1.initPins();
-  Motor2.initPins();
-  Motor3.initPins();
+  primaryMotor.initPins();
+  movingMotor.initPins();
+  flipperMotor.initPins();
 
-  // no init for ClawGrip because we are trying to conserve the motor
-  // we will attach and detach the pin through code during run time to prevent overheating
+  clawServo.attach(CLAW_PIN);
 }
 
 void loop () {
-  // SENSOR STAGE
+  // SENSING FOR INPUT
+  if (secondarySensor.isObjectPresent(3)) { 
+    // check sensor for 3 seconds to see if the object is in front for more than 3 seconds
+    // start the code if this is true
+    // if false, loop back and check again!
 
-  while (!mySensor.isObjectPresent()) {
-    // infinite loop until you sense something
+    // extend the secondary linear actuator and stop
+
+    secondaryLA.extend(2);
+    secondaryLA.stop(1);
+
+    // retract the linear actuator and stop
+
+    secondaryLA.retract(2);
+    secondaryLA.stop(1);
+
+    // move the flipping motor 180 degrees counter-clockwise
+
+    flipperMotor.rotateClockwise(0.5);
+    delay(1000);
+
+    // will use syncho-rotate to save time and rotate flipper and any other motors that need to be reset
+
+    // move the secondary from the fork and to the "assembly zone"
+    movingMotor.rotateCounterClockwise(2); // might need to calculate a precise value for testing
+    
+    // open the claw gripper so that its ready for the primary tank
+
+    for (int pos = CLAW_GRIP_CLOSED; pos <= CLAW_GRIP_OPEN; pos++) {
+      clawServo.write(pos);
+      delay(15);
+    }
+    
+    // move the primary tank over to the gripper so it can close on it
+
+    primaryMotor.rotateCounterClockwise(0.25);
+
+    // close the claw gripper on the primary tank
+
+    for (int pos = CLAW_GRIP_OPEN; pos >= CLAW_GRIP_GRIPPING; pos--) {
+      clawServo.write(pos);
+      delay(15); 
+    }
+
+    // hold the block for 1 second
+    delay(1000);
+
+    // move the primary platform away to make space for the LA to descend
+
+    // using syncho-rotate to save time
+
+    SyncRotationParam params[] = {
+      SyncRotationParam(&primaryMotor, true, 0.25),
+      SyncRotationParam(&flipperMotor, false, 0.5)
+    };
+
+    SynchoRotate(params, 2);
+
+    // lower the linear actuator so the gripper can put the block in the secondary
+
+    gripperLA.extend(2);
+    gripperLA.stop(1);
+
+    // let go of the block by opening the claw a little bit
+
+    for (int pos = CLAW_GRIP_GRIPPING; pos < CLAW_GRIP_RELEASING; pos++) {
+      clawServo.write(pos);
+      delay(15); 
+    }
+
+    delay(1000);
+
+    // retract the linear actuator
+
+    gripperLA.retract(2);
+    gripperLA.stop(2);
+
+    // move the moving platform to the export zone
+
+    movingMotor.rotateCounterClockwise(1); // might need to calculate a precise value through testing
+
+    // give user 5 seconds to pick up the assembled product
+    delay(5000);
+
+    // return the moving platform to its original position
+
+    movingMotor.rotateClockwise(3);
+
+    // also close the gripper mouth in this time you are given
+    for (int pos = CLAW_GRIP_RELEASING; pos >= CLAW_GRIP_CLOSED; pos--) {
+      clawServo.write(pos);
+      delay(15); 
+    }
   }
-
-  delay(1000);
-
-  // LINEAR ACUATOR STAGE
-
-  // EXTEND AND STOP
-  LinearActuator1.extend(2);
-  LinearActuator1.stop(2);
-
-  LinearActuator2.extend(2);
-  LinearActuator2.stop(2);
-  
-  // RETRACT AND STOP
-  LinearActuator1.retract(2);
-  LinearActuator1.stop(2);
-
-  LinearActuator2.retract(2);
-  LinearActuator2.stop(2);
-
-  delay(1000);
-
-  // MOTOR STAGE
-
-  SyncRotationParam params[] = {
-    SyncRotationParam(&Motor1, true, 2.0),
-    SyncRotationParam(&Motor2, false, 2.0),
-    SyncRotationParam(&Motor3, true, 2.0)
-  };
-
-  SynchoRotate(params, 3);
-
-  Motor1.rotateCounterClockwise(2.0);
-  Motor2.rotateClockwise(2.0);
-  Motor3.rotateCounterClockwise(2.0);
-
-  delay(1000);
-  
-  // CLAW GRIP STAGE
-
-  clawServo.attach(CLAW_PIN);
-
-  clawServo.write(CLAW_GRIP_CLOSED); // CLOSE
-  delay(500);
-
-  clawServo.write(CLAW_GRIP_OPEN); // OPEN
-  delay(1500);
-
-  clawServo.write(CLAW_GRIP_CLOSED); // CLOSE AGAIN
-  delay(500);
-
-  // This releases the motor so it stops humming/drawing power
-  clawServo.detach();
-
-  delay(1000);
 }

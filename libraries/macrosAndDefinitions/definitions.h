@@ -8,14 +8,14 @@
 // LINEAR ACTUATOR PINS
 const uint8_t LINEAR_ACTUATOR_1_IN1 = 52;
 const uint8_t LINEAR_ACTUATOR_1_IN2 = 53;
-const uint8_t LINEAR_ACTUATOR_2_IN1 = 54;
-const uint8_t LINEAR_ACTUATOR_2_IN2 = 55;
+const uint8_t LINEAR_ACTUATOR_2_IN3 = 50;
+const uint8_t LINEAR_ACTUATOR_2_IN4 = 51;
 
 // CLAW PINS
-const uint8_t CLAW_PIN = 10;
+const uint8_t CLAW_PIN = 49;
 
 // SENSOR PINS
-const uint8_t IR_SENSOR_PIN = 40;
+const uint8_t IR_SENSOR_PIN = 48;
 
 // STEPPER DRIVER PINS
 const uint8_t PUL_DRIVER_PIN_1 = 22;
@@ -31,7 +31,9 @@ const uint8_t STEPPER_MOTOR_RPM_2;
 const uint8_t STEPPER_MOTOR_RPM_3;
 
 // CLAW GRIP DISTANCES
-const uint16_t CLAW_GRIP_OPEN = 180;
+const uint16_t CLAW_GRIP_OPEN = 195;
+const uint16_t CLAW_GRIP_GRIPPING = 120;
+const uint16_t CLAW_GRIP_RELEASING = 145;
 const uint16_t CLAW_GRIP_CLOSED = 0;
 
 
