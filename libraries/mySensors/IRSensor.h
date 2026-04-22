@@ -26,18 +26,16 @@ class IRSensor {
             for (uint8_t i = 0; i < threshold; i++) {
                 if (digitalRead(pin) == LOW) {
                     count++;
-                }
-                else {
+                } else {
                     return false;
                 }
 
-                // check if the count has reached the threshold, if so, return true
-                if (count >= threshold) {
-                    return true;
+                // only delay if there are more iterations to go
+                if (i < threshold - 1) {
+                    delay(1000);
                 }
-                // delay for a second to check each "second"
-                delay(1000);
             }
+            return count >= threshold;
         }
 
 

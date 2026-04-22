@@ -56,7 +56,7 @@ class StepperMotor {
             return microStepValue;
         }
 
-        uint16_t getPulseDelayInMicroSeconds() {
+        uint32_t getPulseDelayInMicroSeconds() {
             // calculates the delay in microseconds based on the RPM
 
             // the formula is derived from the fact that there are 200 steps in a full rotation of the motor

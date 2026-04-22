@@ -31,9 +31,9 @@ const uint8_t STEPPER_MOTOR_RPM_2;
 const uint8_t STEPPER_MOTOR_RPM_3;
 
 // CLAW GRIP DISTANCES
-const uint16_t CLAW_GRIP_OPEN = 195;
-const uint16_t CLAW_GRIP_GRIPPING = 120;
-const uint16_t CLAW_GRIP_RELEASING = 145;
+const uint16_t CLAW_GRIP_OPEN = 180;
+const uint16_t CLAW_GRIP_GRIPPING = 130;
+const uint16_t CLAW_GRIP_RELEASING = 165;
 const uint16_t CLAW_GRIP_CLOSED = 0;
 
 
