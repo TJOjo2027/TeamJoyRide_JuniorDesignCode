@@ -43,17 +43,17 @@ void loop () {
     // extend the secondary linear actuator and stop
 
     secondaryLA.extend(0.66);
-    secondaryLA.stop(1);
+    secondaryLA.stop(0.25);
 
     // retract the linear actuator and stop
 
     secondaryLA.retract(0.7);
-    secondaryLA.stop(1);
+    secondaryLA.stop(0.25);
 
     // move the flipping motor 180 degrees counter-clockwise
 
     flipperMotor.rotateClockwise(0.52);
-    delay(1000);
+    delay(750);
 
     // will use syncho-rotate to save time and rotate flipper and any other motors that need to be reset
 
@@ -64,7 +64,7 @@ void loop () {
 
     for (int pos = CLAW_GRIP_CLOSED; pos <= CLAW_GRIP_OPEN; pos++) {
       clawServo.write(pos);
-      delay(15);
+      delay(10);
     }
     
     // move the primary tank over to the gripper so it can close on it
@@ -73,7 +73,7 @@ void loop () {
 
     // close the claw gripper on the primary tank
 
-    delay(3000);
+    delay(750);
 
     for (int pos = CLAW_GRIP_OPEN; pos >= CLAW_GRIP_GRIPPING; pos--) {
       clawServo.write(pos);
@@ -81,7 +81,7 @@ void loop () {
     }
 
     // hold the block for 2 seconds
-    delay(2000);
+    delay(750);
 
     // move the primary platform away to make space for the LA to descend
 
@@ -90,7 +90,7 @@ void loop () {
     // lower the linear actuator so the gripper can put the block in the secondary
 
     gripperLA.extend(1.1);
-    gripperLA.stop(1);
+    gripperLA.stop(0.5);
 
     // let go of the block by opening the claw a little bit
 
@@ -99,19 +99,19 @@ void loop () {
       delay(15); 
     }
 
-    delay(1000);
+    delay(750);
 
     // retract the linear actuator
 
     gripperLA.retract(2.1);
-    gripperLA.stop(1);
+    gripperLA.stop(0.5);
 
     // move the moving platform to the export zone
 
     movingMotor.rotateCounterClockwise(1.4); // might need to calculate a precise value through testing
 
-    // give user 5 seconds to pick up the assembled product
-    delay(5000);
+    // give user 2 seconds to pick up the assembled product
+    delay(2000);
 
     // move the flipper motor back
     
@@ -120,7 +120,6 @@ void loop () {
     // return the moving platform to its original position
 
     movingMotor.rotateClockwise(3.5);
-
 
     // also close the gripper mouth in this time you are given
     clawServo.write(CLAW_GRIP_CLOSED);
