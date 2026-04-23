@@ -14,7 +14,7 @@ LinearActuator gripperLA = LinearActuator(LINEAR_ACTUATOR_2_IN3, LINEAR_ACTUATOR
 // STEPPER MOTOR OBJECTS
 StepperMotor primaryMotor = StepperMotor(PUL_DRIVER_PIN_1, DIR_DRIVER_PIN_1, 10, 4);
 StepperMotor movingMotor = StepperMotor(PUL_DRIVER_PIN_2, DIR_DRIVER_PIN_2, 40, 1);
-StepperMotor flipperMotor = StepperMotor(PUL_DRIVER_PIN_3, DIR_DRIVER_PIN_3, 15, 1);
+StepperMotor flipperMotor = StepperMotor(PUL_DRIVER_PIN_3, DIR_DRIVER_PIN_3, 20, 4);
 
 // CLAW GRIP SERVO (OBJECT IS ALREADY MADE, NO POINT RE-INVENTING THE WHEEL)
 Servo clawServo;
@@ -35,31 +35,31 @@ void setup () {
 
 void loop () {
   // SENSING FOR INPUT
-  if (secondarySensor.isObjectPresent(4)) { 
-    // check sensor for 4 seconds to see if the object is in front for more than 3 seconds
+  if (secondarySensor.isObjectPresent(6)) { 
+    // check sensor for 6 seconds to see if the object is in front for more than 6 seconds
     // start the code if this is true
     // if false, loop back and check again!
 
     // extend the secondary linear actuator and stop
 
-    secondaryLA.extend(0.65);
+    secondaryLA.extend(0.66);
     secondaryLA.stop(1);
 
     // retract the linear actuator and stop
 
-    secondaryLA.retract(0.65);
+    secondaryLA.retract(0.7);
     secondaryLA.stop(1);
 
     // move the flipping motor 180 degrees counter-clockwise
 
-    flipperMotor.rotateClockwise(0.5);
+    flipperMotor.rotateClockwise(0.52);
     delay(1000);
 
     // will use syncho-rotate to save time and rotate flipper and any other motors that need to be reset
 
     // move the secondary from the fork and to the "assembly zone"
-    movingMotor.rotateCounterClockwise(1.8); // might need to calculate a precise value for testing
-    
+    movingMotor.rotateCounterClockwise(2.1); // might need to calculate a precise value for testing
+ 
     // open the claw gripper so that its ready for the primary tank
 
     for (int pos = CLAW_GRIP_CLOSED; pos <= CLAW_GRIP_OPEN; pos++) {
@@ -85,25 +85,7 @@ void loop () {
 
     // move the primary platform away to make space for the LA to descend
 
-    // using syncho-rotate to save time
-
-    SyncRotationParam params[] = {
-      SyncRotationParam(&primaryMotor, true, 0.25),
-      SyncRotationParam(&flipperMotor, false, 0.5)
-    };
-
-    SynchoRotate(params, 2);
-
-    // juggle the block (dropping it little by little)
-
-    for (int i = 0; i < 25; i++) {
-      clawServo.write(CLAW_GRIP_GRIPPING);
-      delay(40);
-      clawServo.write(CLAW_GRIP_GRIPPING + 30);
-      delay(15);
-    }
-
-    clawServo.write(CLAW_GRIP_GRIPPING);
+    primaryMotor.rotateClockwise(0.25);
 
     // lower the linear actuator so the gripper can put the block in the secondary
 
@@ -126,19 +108,21 @@ void loop () {
 
     // move the moving platform to the export zone
 
-    movingMotor.rotateCounterClockwise(1.7); // might need to calculate a precise value through testing
+    movingMotor.rotateCounterClockwise(1.4); // might need to calculate a precise value through testing
 
     // give user 5 seconds to pick up the assembled product
     delay(5000);
+
+    // move the flipper motor back
+    
+    flipperMotor.rotateCounterClockwise(0.52);
 
     // return the moving platform to its original position
 
     movingMotor.rotateClockwise(3.5);
 
+
     // also close the gripper mouth in this time you are given
-    for (int pos = CLAW_GRIP_RELEASING; pos >= CLAW_GRIP_CLOSED; pos--) {
-      clawServo.write(pos);
-      delay(15); 
-    }
+    clawServo.write(CLAW_GRIP_CLOSED);
   }
 }
